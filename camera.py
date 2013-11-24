@@ -261,9 +261,13 @@ def readImageAndWriteToFile(bauds, size):
                             data = uart.read()
                             f.write('%c' % data)
             print "Image written to /tmp/%s" % (filename)
-        
+    
+    savedfile = "/tmp/%s" % (filename)
+    return savedfile
+
+def transferImage(path):
     # (OPTIONAL) send the image through ssh
-    comando = "scp /tmp/%s victor@192.168.7.1:~/Desktop" % (filename)
+    comando = "scp %s victor@192.168.7.1:~/Desktop" % (path)
     os.system(comando)
 
 
@@ -278,4 +282,6 @@ resetCamera()
 setImageSize(size)
 stopCurrentFrame()
 getCurrentFrameSize()
-readImageAndWriteToFile(bauds, size)
+image = readImageAndWriteToFile(bauds, size)
+transferImage(image)
+
