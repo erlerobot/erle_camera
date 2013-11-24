@@ -26,7 +26,7 @@ initbauds=38400
 uart = serial.Serial(device, baudrate=initbauds)
 msb = None
 lsb = None
-size = "640x480" #size of the images to fetch from the camara (640x480,320x240,160x120)
+size = "320x240" #size of the images to fetch from the camara (640x480,320x240,160x120)
 ##############################
 
 def resetCamera():    
@@ -55,6 +55,9 @@ def setBaudRate(baud):
     
     @warning once the baudrate has been changed to other than the default value (38400), the camera needs to be
     powered off (for now disconnecting the 5V work) in order to change it again.
+
+    @warning it seems that if the baudrate is changed from the default one (38400) the image freezes and 
+    also the size cannot be controlled. Probably some issue with the buffers.
 
     @return serial interface to use after modifying the baudrate
     """    
@@ -196,7 +199,7 @@ def readImageAndWriteToFile(bauds, size):
     """
     uart.write(b'\x56\x00\x32\x0C\x00\x0A\x00\x00\x00\x00\x00\x00%c%c\x00\x0A'
     % (msb,lsb))
-    
+
     # take in account initbauds    
     if bauds == 9600:   #TODO
         if size == "640x480":
@@ -222,7 +225,8 @@ def readImageAndWriteToFile(bauds, size):
         elif size == "320x240":
             time.sleep(0.7)
         elif size == "160x120":
-            time.sleep(0.000001)
+            #time.sleep(0.000001)
+            pass
         else:
             raise Exception("size %s not supported" % size)        
     elif bauds == 57600:    #TODO
@@ -236,11 +240,14 @@ def readImageAndWriteToFile(bauds, size):
             raise Exception("size %s not supported" % size)        
     elif bauds == 115200:        
         if size == "640x480":
-            time.sleep(2.5)
+            #time.sleep(2.5)
+            pass
         elif size == "320x240":
-            time.sleep(0.7)
+            #time.sleep(0.7)
+            pass
         elif size == "160x120":
-            time.sleep(0.000001)
+            #time.sleep(0.000001)
+            pass
         else:
             raise Exception("size %s not supported" % size)   
 
